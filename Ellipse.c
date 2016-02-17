@@ -79,6 +79,26 @@ glClear(GL_COLOR_BUFFER_BIT);
         	glVertex2i(midx - x, midy - y);
 		glEnd();
         }
+
+	int i;
+glBegin(GL_POINTS);
+	for(i=0;i<640;i++){
+
+	glVertex2s(i,150);
+		
+	}
+printf("x");
+
+for(i=0;i<480;i++){
+	glVertex2s(100,i);
+		
+	}
+printf("y");
+	
+glEnd();
+
+
+
 	glFlush();
   }
 
