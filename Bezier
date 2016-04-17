@@ -1,0 +1,79 @@
+#include <GL/gl.h>
+#include <GL/gl.h>
+#include <stdlib.h>
+#include <GL/glut.h>
+
+
+GLfloat ctrlpoints[8][3] = {
+        { 3.0, 1.0, 0.0}, { 4.0, 2.0, 0.0}, 
+        {6.0, 0.0, 0.0}, {7.0, 2.0, 0.0},
+        {7.0,2.0,0.0},{8.0,4.0,0.0},{8.0,10.0,0.0},{19.0,26.0,0.0}};  
+
+        /*
+                                                      new points found using 
+                                                      Q0=P0
+                                                      Q1=2P3-P2
+                                                      Q2=P1+4(P3-P2)
+                                                      Q3=13P3-12P2
+        */
+
+void init(void)
+{
+   glClearColor(1.0, 1.0, 1.0, 0.0);
+   glShadeModel(GL_FLAT);
+   glMap1f(GL_MAP1_VERTEX_3, 0.0, 1.0, 3, 8, &ctrlpoints[0][0]);
+   glEnable(GL_MAP1_VERTEX_3);
+   gluOrtho2D(-1.0,20.0,-1.0,30.0);
+}
+
+
+
+
+
+void display(void)
+{
+   int i;
+
+   glClear(GL_COLOR_BUFFER_BIT);
+   glColor3f(0.0, 0.0, 0.0);
+   glBegin(GL_LINE_STRIP);
+      for (i = 0; i <= 30; i++)
+         glEvalCoord1f((GLfloat) i/30.0);
+   glEnd();
+   
+   glPointSize(5.0);
+   glColor3f(1.0, 1.0, 0.0);
+   glBegin(GL_POINTS);
+      for (i = 0; i < 8; i++)
+         glVertex3fv(&ctrlpoints[i][0]);
+   glEnd();
+   glColor3f(0.0,0.0,0.0);
+   glBegin(GL_LINES);
+      glVertex2i(0,-1);
+      glVertex2i(0,30);
+   glEnd();
+   glColor3f(0.0,0.0,0.0);
+   glBegin(GL_LINES);
+      glVertex2i(-1,0);
+      glVertex2i(20,0);
+   glEnd();
+   glFlush();
+}
+
+
+
+
+
+int main(int argc, char** argv)
+{
+   glutInit(&argc, argv);
+   glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
+   glutInitWindowSize (500, 500);
+   glutInitWindowPosition (200, 200);
+   glutCreateWindow (argv[0]);
+   init ();
+   glutDisplayFunc(display);
+   
+   glutMainLoop();
+   return 0;
+}
